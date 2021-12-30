@@ -1,0 +1,12 @@
+{
+  "name": "apimock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "tf:init": "terraform init",
+    "tf:plan": "terraform plan -out prd.plan -no-color",
+    "tf:apply": "terraform apply prd.plan",
+    "tf:destroy": "terraform destroy"
+  }
+}

@@ -1,0 +1,202 @@
+openapi: 3.0.1
+info:
+  title: mockapi-openapi
+  version: 1.0.0
+  description: This is the mock api service
+paths:
+  /articles:
+    get:
+      operationId: getPostList
+      summary: Retrieve a list of posts
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+      responses:
+        200:
+          description: List of post
+        400:
+          description: Bad Request
+        500:
+          description: Something went wrong
+      x-amazon-apigateway-request-validator: query-only
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        responses:
+          200:
+            statusCode: 200
+            responseTemplates: 
+              application/json: "{\"status\": 200, \"data\": { \"id\": 123456789 }, \"errors\":{}, \"meta\":{}}"
+          400:
+            statusCode: 400
+            responseTemplates: 
+              application/json: "{\"status\": 400, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+          500:
+            statusCode: 500
+            responseTemplates: 
+              application/json: "{\"status\": 500, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+    post:
+      operationId: createPost
+      summary: Create a post
+      requestBody:
+        description: Create a new post
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleCreation"
+      responses:
+        200:
+          description: Article created
+        400:
+          description: Bad Request
+        500:
+          description: Something went wrong
+      x-amazon-apigateway-request-validator: body-only
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        responses:
+          200:
+            statusCode: 200
+            responseTemplates: 
+              application/json: "{\"status\": 200, \"data\": { \"id\": 123456789 }, \"errors\":{}, \"meta\":{}}"
+          400:
+            statusCode: 400
+            responseTemplates: 
+              application/json: "{ \"message\": \"Invalid request body\" }"
+          500:
+            statusCode: 500
+            responseTemplates: 
+              application/json: "{\"status\": 500, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+  /articles/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: UUID of the post
+    get:
+      operationId: getAPostById
+      summary: Retrieve a post
+      responses:
+        200:
+          description: response with new post data
+        400:
+          description: Bad Request
+        500:
+          description: Something went wrong
+      x-amazon-apigateway-request-validator: params-only
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        responses:
+          200:
+            statusCode: 200
+            responseTemplates: 
+              application/json: "{\"status\": 200, \"data\": { \"id\": 123456789 }, \"errors\":{}, \"meta\":{}}"
+          400:
+            statusCode: 400
+            responseTemplates: 
+              application/json: "{\"status\": 400, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+          500:
+            statusCode: 500
+            responseTemplates: 
+              application/json: "{\"status\": 500, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+    put:
+      operationId: updateAPost
+      summary: Update a post
+      responses:
+        200:
+          description: Response with post data
+        400:
+          description: Bad Request
+        500:
+          description: Something went wrong
+      x-amazon-apigateway-request-validator: params-only
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        responses:
+          200:
+            statusCode: 200
+            responseTemplates: 
+              application/json: "{\"status\": 200, \"data\": { \"id\": 123456789 }, \"errors\":{}, \"meta\":{}}"
+          400:
+            statusCode: 400
+            responseTemplates: 
+              application/json: "{\"status\": 400, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+          500:
+            statusCode: 500
+            responseTemplates: 
+              application/json: "{\"status\": 500, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+    delete:
+      operationId: deleteAPost
+      summary: Delete a post
+      responses:
+        200:
+          description: Response when post deleted
+        400:
+          description: Bad Request
+        500:
+          description: Something went wrong
+      x-amazon-apigateway-request-validator: params-only
+      x-amazon-apigateway-integration:
+        type: mock
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        responses:
+          200:
+            statusCode: 200
+            responseTemplates: 
+              application/json: "{\"status\": 200, \"data\": { \"id\": 123456789 }, \"errors\":{}, \"meta\":{}}"
+          400:
+            statusCode: 400
+            responseTemplates: 
+              application/json: "{\"status\": 400, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+          500:
+            statusCode: 500
+            responseTemplates: 
+              application/json: "{\"status\": 500, \"data\": {}, \"errors\":{}, \"meta\":{}}"
+components:
+  schemas:
+    ArticleCreation:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+      required:
+      - title
+      - description
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+    validateQueryStringParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+    validateQueryStringParameters: false
+  body-only:
+    validateRequestBody: true
+    validateRequestParameters: false
+    validateQueryStringParameters: false
+  query-only:
+    validateRequestBody: false
+    validateRequestParameters: false
+    validateQueryStringParameters: true
