@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "tf:init": "terraform init",
-    "tf:plan": "terraform plan -out prd.plan -no-color",
-    "tf:apply": "terraform apply prd.plan",
-    "tf:destroy": "terraform destroy"
+    "init": "terraform init",
+    "plan": "terraform plan -out prd.plan -no-color",
+    "apply": "terraform apply prd.plan",
+    "destroy": "terraform destroy"
   }
 }
